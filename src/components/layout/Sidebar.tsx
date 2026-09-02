@@ -16,14 +16,17 @@ export default function Sidebar() {
     <aside className="flex h-screen w-64 shrink-0 flex-col border-r border-[var(--color-card-border)] bg-[var(--color-sidebar)]">
       {/* Brand */}
       <div className="flex items-center gap-3 px-6 py-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-secondary)]">
-          <Navigation className="h-5 w-5 text-white" strokeWidth={2.5} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-l">
+          {/* <Navigation className="h-5 w-5 text-white" strokeWidth={2.5} /> */}
+          <img src="/src/assets/Logo-sarathi.png" alt="logo" />
         </div>
         <div>
           <p className="text-base font-semibold leading-none text-[var(--color-text-primary)]">
             SARATHI
           </p>
-          <p className="mt-1 text-xs text-[var(--color-accent-muted)]">Admin Panel</p>
+          <p className="mt-1 text-xs text-[var(--color-accent-muted)]">
+            Admin Panel
+          </p>
         </div>
       </div>
 
