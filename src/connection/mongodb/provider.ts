@@ -1,0 +1,101 @@
+// ============================================================
+// Same reasoning as the MySQL provider: a browser can't talk to
+// MongoDB directly, so this calls a small Express + Mongoose API
+// instead — see c_server.example.js in this folder.
+// ============================================================
+import axios from "axios";
+import type { DataProvider, DateRange, DashboardDataset, ReportsDataset, AdminSession } from "../types";
+
+const baseURL = import.meta.env.VITE_API_BASE_URL ?? "";
+const isConfigured = Boolean(baseURL);
+
+const api = axios.create({ baseURL });
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("sarathi_admin_token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+function warnNotConfigured(method: string) {
+  console.warn(
+    `[mongodbProvider] ${method} called but VITE_API_BASE_URL isn't set — add it to .env, and make sure your Express+MongoDB server is running. See src/connection/mongodb/README.md.`
+  );
+}
+
+export const mongodbProvider: DataProvider = {
+  id: "mongodb",
+  label: "MongoDB",
+  isConfigured,
+
+  async login(email, password): Promise<AdminSession | null> {
+    if (!isConfigured) return warnNotConfigured("login"), null;
+    try {
+      const { data } = await api.post("/auth/login", { email, password });
+      return data; // expected shape: { token, admin: { name, email } }
+    } catch {
+      return null;
+    }
+  },
+
+  async logout() {
+    // Stateless JWT-style auth needs no server call.
+  },
+
+  async getUsers() {
+    if (!isConfigured) return warnNotConfigured("getUsers"), [];
+    const { data } = await api.get("/users");
+    return data;
+  },
+  async getRiders() {
+    if (!isConfigured) return warnNotConfigured("getRiders"), [];
+    const { data } = await api.get("/riders");
+    return data;
+  },
+  async getPassengers() {
+    if (!isConfigured) return warnNotConfigured("getPassengers"), [];
+    const { data } = await api.get("/passengers");
+    return data;
+  },
+  async getRides() {
+    if (!isConfigured) return warnNotConfigured("getRides"), [];
+    const { data } = await api.get("/rides");
+    return data;
+  },
+  async getBookings() {
+    if (!isConfigured) return warnNotConfigured("getBookings"), [];
+    const { data } = await api.get("/bookings");
+    return data;
+  },
+  async getPayments() {
+    if (!isConfigured) return warnNotConfigured("getPayments"), [];
+    const { data } = await api.get("/payments");
+    return data;
+  },
+  async getReviews() {
+    if (!isConfigured) return warnNotConfigured("getReviews"), [];
+    const { data } = await api.get("/reviews");
+    return data;
+  },
+  async getKycSubmissions() {
+    if (!isConfigured) return warnNotConfigured("getKycSubmissions"), [];
+    const { data } = await api.get("/kyc-submissions");
+    return data;
+  },
+  async getDashboardData(range: DateRange): Promise<DashboardDataset> {
+    if (!isConfigured) {
+      warnNotConfigured("getDashboardData");
+      return { statCards: [], rideStatistics: [], revenueOverview: [] };
+    }
+    const { data } = await api.get("/dashboard", { params: { range } });
+    return data;
+  },
+  async getReportsData(): Promise<ReportsDataset> {
+    if (!isConfigured) {
+      warnNotConfigured("getReportsData");
+      return { summary: [], ridesOverview: [], topRoutes: [], paymentMethods: [] };
+    }
+    const { data } = await api.get("/reports");
+    return data;
+  },
+};
