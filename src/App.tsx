@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import Login from "./features/auth/Login";
@@ -18,6 +18,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Root: redirect to dashboard (ProtectedRoute will send to /login if not authed) */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/login" element={<Login />} />
 
         <Route
@@ -26,7 +28,7 @@ export default function App() {
             <ProtectedRoute>
               <DashboardLayout>
                 <Routes>
-                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/riders" element={<Riders />} />
                   <Route path="/passengers" element={<Passengers />} />
