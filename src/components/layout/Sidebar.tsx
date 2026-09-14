@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { LogOut, Navigation } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { navItems } from "../../data/navigation";
 import { useAuthStore } from "../../store/c_authStore";
 

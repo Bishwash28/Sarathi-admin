@@ -3,6 +3,7 @@ import { demoProvider } from "./demo/provider";
 import { supabaseProvider } from "./supabase/provider";
 import { mysqlProvider } from "./mysql/provider";
 import { mongodbProvider } from "./mongodb/provider";
+import { restProvider } from "./rest/provider";
 
 /**
  * ============================================================
@@ -10,7 +11,7 @@ import { mongodbProvider } from "./mongodb/provider";
  * backend the whole app talks to.
  * ============================================================
  *
- * Set VITE_BACKEND in your .env to one of: demo | supabase | mysql | mongodb
+ * Set VITE_BACKEND in your .env to one of: demo | supabase | mysql | mongodb | rest
  * No .env, or an unrecognized value → falls back to "demo" automatically.
  *
  * Every page imports `dataProvider` from here and nothing else — switching
@@ -23,6 +24,7 @@ const providers: Record<DataProvider["id"], DataProvider> = {
   supabase: supabaseProvider,
   mysql: mysqlProvider,
   mongodb: mongodbProvider,
+  rest: restProvider,
 };
 
 export const dataProvider: DataProvider = providers[BACKEND] ?? demoProvider;
