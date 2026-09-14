@@ -35,7 +35,7 @@ export interface AdminSession {
  * one-line .env change instead of a rewrite.
  */
 export interface DataProvider {
-  id: "demo" | "supabase" | "mysql" | "mongodb";
+  id: "demo" | "supabase" | "mysql" | "mongodb" | "rest";
   label: string;
   /** Whether this backend has real credentials configured (env vars set).
    *  Demo is always true. Others are false until you add your .env values. */
