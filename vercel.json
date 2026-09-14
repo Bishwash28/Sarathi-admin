@@ -1,0 +1,11 @@
+{
+  "outputDirectory": "dist",
+  "buildCommand": "npm run build",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://sarthi-backend-4.onrender.com/api/:path*"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
